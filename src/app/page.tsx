@@ -16,6 +16,7 @@ export default function Home() {
   const [chatTokenCount, setChatTokenCount] = useState<number | null>(null);
   const [isTextLoading, setIsTextLoading] = useState(false);
   const [isChatLoading, setIsChatLoading] = useState(false);
+  const [selectedModel, setSelectedModel] = useState("claude-4-sonnet-20250514");
 
   const addMessage = () => {
     setMessages([...messages, { role: "user", content: "" }]);
@@ -44,7 +45,7 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ messages: messagesToCount }),
+      body: JSON.stringify({ messages: messagesToCount, model: selectedModel }),
     });
 
     const data = await response.json();
@@ -61,7 +62,7 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify({ messages, model: selectedModel }),
     });
 
     const data = await response.json();
@@ -74,7 +75,24 @@ export default function Home() {
       <header className="bg-background border-b border-border shadow-sm flex-shrink-0">
         <nav className="px-6 py-3 flex justify-between items-center">
           <h1 className="text-2xl font-bold">Token Counter</h1>
-          <ThemeSwitcher />
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <select
+                value={selectedModel}
+                onChange={(e) => setSelectedModel(e.target.value)}
+                className="appearance-none pl-3 pr-10 py-2 border border-border rounded-lg bg-background text-sm font-medium shadow-sm hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer"
+              >
+                <option value="claude-4-sonnet-20250514">Claude 4 Sonnet</option>
+                <option value="claude-4-opus-20250514">Claude 4 Opus</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+            <ThemeSwitcher />
+          </div>
         </nav>
       </header>
       <main className="flex-1 flex overflow-hidden">
