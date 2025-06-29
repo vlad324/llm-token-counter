@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ThemeSwitcher } from "./components/theme-toggle-button";
-import { Linkedin, Github, Twitter } from "lucide-react";
+import { Linkedin, Github, Twitter, X } from "lucide-react";
 
 type Message = {
   role: "user" | "assistant";
@@ -21,7 +21,14 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState<"text" | "chat">("text");
 
   const addMessage = () => {
-    setMessages([...messages, { role: "user", content: "" }]);
+    const lastRole = messages[messages.length - 1]?.role || "assistant";
+    const newRole = lastRole === "user" ? "assistant" : "user";
+    setMessages([...messages, { role: newRole, content: "" }]);
+  };
+
+  const deleteMessage = (index: number) => {
+    const newMessages = messages.filter((_, i) => i !== index);
+    setMessages(newMessages.length > 0 ? newMessages : [{ role: "user", content: "" }]);
   };
 
   const handleMessageChange = (index: number, content: string) => {
@@ -160,22 +167,31 @@ export default function Home() {
                 <div className="flex-1 overflow-y-auto space-y-4 border border-border rounded-lg p-4 bg-muted">
                   {messages.map((message, index) => (
                     <div key={index} className="flex flex-col gap-2">
-                      <div className="relative self-start">
-                        <select
-                          value={message.role}
-                          onChange={(e) =>
-                            handleRoleChange(index, e.target.value as "user" | "assistant")
-                          }
-                          className="appearance-none pl-3 pr-10 py-2 border border-border rounded-lg bg-background text-sm font-medium shadow-sm hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer"
-                        >
-                          <option value="user">👤 User</option>
-                          <option value="assistant">🤖 Assistant</option>
-                        </select>
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                          <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
+                      <div className="flex items-center justify-between">
+                        <div className="relative">
+                          <select
+                            value={message.role}
+                            onChange={(e) =>
+                              handleRoleChange(index, e.target.value as "user" | "assistant")
+                            }
+                            className="appearance-none pl-3 pr-10 py-2 border border-border rounded-lg bg-background text-sm font-medium shadow-sm hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer"
+                          >
+                            <option value="user">👤 User</option>
+                            <option value="assistant">🤖 Assistant</option>
+                          </select>
+                          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
                         </div>
+                        <button
+                          onClick={() => deleteMessage(index)}
+                          className="p-1 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded transition-colors"
+                          title="Delete message"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
                       </div>
                       <textarea
                         value={message.content}
