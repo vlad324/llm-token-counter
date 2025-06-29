@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ThemeSwitcher } from "./components/theme-toggle-button";
+import { Linkedin, Github, Twitter } from "lucide-react";
 
 type Message = {
   role: "user" | "assistant";
@@ -188,6 +189,36 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <footer className="border-t border-border bg-background/50 backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto px-6 py-6">
+          <div className="flex items-center justify-center space-x-6">
+            <a
+              href="https://www.linkedin.com/in/uladzislauradkevich/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Linkedin className="w-5 h-5" />
+            </a>
+            <a
+              href="https://github.com/vlad324"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Github className="w-5 h-5" />
+            </a>
+            <a
+              href="https://x.com/ulad_dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Twitter className="w-5 h-5" />
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
