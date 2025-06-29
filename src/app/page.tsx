@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { ThemeSwitcher } from "./components/theme-toggle-button";
 
 type Message = {
   role: "user" | "assistant";
@@ -69,20 +70,21 @@ export default function Home() {
   };
 
   return (
-    <div className="h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col">
-      <header className="bg-white dark:bg-gray-800 shadow-md flex-shrink-0">
+    <div className="h-screen bg-background text-foreground flex flex-col">
+      <header className="bg-background border-b border-border shadow-sm flex-shrink-0">
         <nav className="px-6 py-3 flex justify-between items-center">
           <h1 className="text-2xl font-bold">Token Counter</h1>
+          <ThemeSwitcher />
         </nav>
       </header>
       <main className="flex-1 flex overflow-hidden">
         <div className="flex-1 flex">
           {/* Left Side - Text Input */}
-          <div className="w-1/2 p-6 border-r border-gray-300 dark:border-gray-700">
+          <div className="w-1/2 p-6 border-r border-border">
             <div className="h-full flex flex-col">
-              <h2 className="text-xl font-bold mb-4 text-blue-600">Text Token Counter</h2>
+              <h2 className="text-xl font-bold mb-4 text-primary">Text Token Counter</h2>
               <textarea
-                className="flex-1 p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 resize-none"
+                className="flex-1 p-4 border border-border rounded-lg bg-background resize-none focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="Enter your text here to count tokens..."
                 value={text}
                 onChange={(e) => setText(e.target.value)}
@@ -90,13 +92,13 @@ export default function Home() {
               <div className="mt-4 flex items-center justify-between">
                 <button
                   onClick={calculateTextTokens}
-                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 font-medium"
+                  className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 font-medium transition-colors"
                   disabled={isTextLoading}
                 >
                   {isTextLoading ? "Calculating..." : "Calculate Tokens"}
                 </button>
                 {textTokenCount !== null && (
-                  <div className="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg font-semibold">
+                  <div className="px-4 py-2 bg-accent text-accent-foreground rounded-lg font-semibold">
                     Tokens: {textTokenCount}
                   </div>
                 )}
@@ -107,9 +109,9 @@ export default function Home() {
           {/* Right Side - Chat Messages */}
           <div className="w-1/2 p-6">
             <div className="h-full flex flex-col">
-              <h2 className="text-xl font-bold mb-4 text-purple-600">Chat Token Counter</h2>
+              <h2 className="text-xl font-bold mb-4 text-secondary">Chat Token Counter</h2>
               <div
-                className="flex-1 overflow-y-auto space-y-4 border border-gray-300 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800">
+                className="flex-1 overflow-y-auto space-y-4 border border-border rounded-lg p-4 bg-muted">
                 {messages.map((message, index) => (
                   <div key={index} className="flex flex-col gap-2">
                     <select
@@ -117,7 +119,7 @@ export default function Home() {
                       onChange={(e) =>
                         handleRoleChange(index, e.target.value as "user" | "assistant")
                       }
-                      className="self-start px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 text-sm font-medium leading-relaxed"
+                      className="self-start px-3 py-2 border border-border rounded-md bg-background text-sm font-medium leading-relaxed"
                     >
                       <option value="user">👤 User</option>
                       <option value="assistant">🤖 Assistant</option>
@@ -125,7 +127,7 @@ export default function Home() {
                     <textarea
                       value={message.content}
                       onChange={(e) => handleMessageChange(index, e.target.value)}
-                      className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-700 resize-none"
+                      className="w-full p-3 border border-border rounded-md bg-background resize-none focus:outline-none focus:ring-2 focus:ring-ring"
                       placeholder={`Message ${index + 1}...`}
                       rows={3}
                     ></textarea>
@@ -136,20 +138,20 @@ export default function Home() {
                 <div className="space-x-2">
                   <button
                     onClick={addMessage}
-                    className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 font-medium"
+                    className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/90 font-medium transition-colors"
                   >
                     + Add Message
                   </button>
                   <button
                     onClick={calculateChatTokens}
-                    className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 font-medium"
+                    className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 font-medium transition-colors"
                     disabled={isChatLoading}
                   >
                     {isChatLoading ? "Calculating..." : "Calculate Tokens"}
                   </button>
                 </div>
                 {chatTokenCount !== null && (
-                  <div className="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg font-semibold">
+                  <div className="px-4 py-2 bg-accent text-accent-foreground rounded-lg font-semibold">
                     Tokens: {chatTokenCount}
                   </div>
                 )}
