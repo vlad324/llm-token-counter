@@ -84,6 +84,8 @@ export default function Home() {
               >
                 <option value="claude-4-sonnet-20250514">Claude 4 Sonnet</option>
                 <option value="claude-4-opus-20250514">Claude 4 Opus</option>
+                <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+                <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                 <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
