@@ -2,23 +2,24 @@
 
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
+import { Monitor, Sun, Moon } from 'lucide-react'
 
 const themes = [
   { 
     name: 'light', 
-    icon: '☀️', 
+    icon: Sun, 
     label: 'Light',
     description: 'Light theme'
   },
   { 
     name: 'dark', 
-    icon: '🌙', 
+    icon: Moon, 
     label: 'Dark',
     description: 'Dark theme'
   },
   { 
     name: 'system', 
-    icon: '💻', 
+    icon: Monitor, 
     label: 'System',
     description: 'Follow system setting'
   },
@@ -50,14 +51,10 @@ export function ThemeSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-background border border-border hover:bg-accent hover:text-accent-foreground transition-colors"
+        className="p-2 rounded-lg bg-muted/50 hover:bg-muted border border-border/50 transition-colors"
         aria-label="Toggle theme menu"
       >
-        <span className="text-sm">{currentTheme.icon}</span>
-        <span className="text-sm font-medium">{currentTheme.label}</span>
-        <span className={`text-xs transition-transform ${isOpen ? 'rotate-180' : ''}`}>
-          ▼
-        </span>
+        <currentTheme.icon className="h-4 w-4" />
       </button>
 
       {isOpen && (
@@ -83,7 +80,7 @@ export function ThemeSwitcher() {
                 `}
                 title={t.description}
               >
-                <span>{t.icon}</span>
+                <t.icon className="h-4 w-4" />
                 <span className="font-medium">{t.label}</span>
               </button>
             ))}
