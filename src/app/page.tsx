@@ -3,6 +3,7 @@ import { useCallback, useState } from "react";
 import { ThemeSwitcher } from "./components/theme-toggle-button";
 import { MessageItem } from "./components/message-item";
 import { CountTokensRequest, CountTokensResponse, Message } from "./types/message";
+import { MODELS } from "./config/models";
 
 
 export default function Home() {
@@ -11,7 +12,7 @@ export default function Home() {
   ]);
   const [chatTokenCount, setChatTokenCount] = useState<number | null>(null);
   const [isChatLoading, setIsChatLoading] = useState(false);
-  const [selectedModel, setSelectedModel] = useState("claude-4-sonnet-20250514");
+  const [selectedModel, setSelectedModel] = useState(MODELS[0].modelId);
 
   const addMessage = useCallback(() => {
     setMessages(prev => {
@@ -83,10 +84,11 @@ export default function Home() {
                 onChange={(e) => setSelectedModel(e.target.value)}
                 className="appearance-none pl-3 pr-10 py-2 border border-border rounded-lg bg-background text-sm font-medium shadow-sm hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer"
               >
-                <option value="claude-4-sonnet-20250514">Claude 4 Sonnet</option>
-                <option value="claude-4-opus-20250514">Claude 4 Opus</option>
-                <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
-                <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                {MODELS.map((model) => (
+                  <option key={model.modelId} value={model.modelId}>
+                    {model.name}
+                  </option>
+                ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                 <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
