@@ -2,7 +2,7 @@
 import { useCallback, useState } from "react";
 import { ThemeSwitcher } from "./components/theme-toggle-button";
 import { MessageItem } from "./components/message-item";
-import { CountTokensRequest, CountTokensResponse, Message } from "./types/message";
+import { CountTokensRequest, CountTokensResponse, Message, APIErrorResponse } from "./types/message";
 import { MODELS } from "./config/models";
 
 export default function Home() {
@@ -12,6 +12,7 @@ export default function Home() {
   const [chatTokenCount, setChatTokenCount] = useState<number | null>(null);
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [selectedModel, setSelectedModel] = useState(MODELS[0].modelId);
+  const [apiError, setApiError] = useState<APIErrorResponse | null>(null);
 
   const addMessage = useCallback(() => {
     setMessages(prev => {
@@ -47,6 +48,7 @@ export default function Home() {
   const calculateChatTokens = async () => {
     setIsChatLoading(true);
     setChatTokenCount(null);
+    setApiError(null);
 
     try {
       const requestBody: CountTokensRequest = {
@@ -62,10 +64,22 @@ export default function Home() {
         body: JSON.stringify(requestBody),
       });
 
-      const data: CountTokensResponse = await response.json();
-      setChatTokenCount(data.inputTokens);
+      const data = await response.json();
+
+      if (!response.ok) {
+        const errorData = data as APIErrorResponse;
+        setApiError(errorData);
+        return;
+      }
+
+      const successData = data as CountTokensResponse;
+      setChatTokenCount(successData.inputTokens);
     } catch (error) {
       console.error('Error counting tokens:', error);
+      setApiError({
+        error: 'Network error occurred',
+        type: 'server_error'
+      });
     } finally {
       setIsChatLoading(false);
     }
@@ -151,6 +165,17 @@ export default function Home() {
                               d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                       </svg>
                       <span>Tokens: {chatTokenCount.toLocaleString()}</span>
+                    </div>
+                  )}
+                  {apiError && (
+                    <div className="px-6 py-3 bg-destructive/10 text-destructive border border-destructive/20 rounded-lg font-medium text-sm flex items-center gap-2 h-full">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                      <span>
+                        {apiError.error}
+                      </span>
                     </div>
                   )}
                 </div>

@@ -1,6 +1,8 @@
+export type Provider = "anthropic" | "google";
+
 export type ModelConfig = {
   modelId: string;
-  provider: "anthropic" | "google";
+  provider: Provider;
   name: string;
 };
 
