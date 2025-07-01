@@ -57,9 +57,8 @@ export function ThemeSwitcher() {
   if (!mounted) {
     return (
       <div className="relative">
-        <button className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-muted opacity-50 border border-border">
-          <span>Theme</span>
-          <span className="text-xs">▼</span>
+        <button className="p-2.5 rounded-lg bg-muted/50 opacity-50 border border-border animate-pulse">
+          <div className="w-4 h-4 bg-muted-foreground/30 rounded"></div>
         </button>
       </div>
     )
@@ -71,7 +70,7 @@ export function ThemeSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-lg bg-muted/50 hover:bg-muted border border-border/50 transition-colors"
+        className="p-2.5 rounded-lg bg-card hover:bg-accent border border-border hover:border-primary/30 transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 group"
         aria-label="Toggle theme menu"
       >
         <currentTheme.icon/>
@@ -81,13 +80,16 @@ export function ThemeSwitcher() {
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 z-10"
+            className="fixed inset-0"
+            style={{ zIndex: 'var(--z-overlay)' }}
             onClick={() => setIsOpen(false)}
           />
 
           {/* Dropdown */}
-          <div className="absolute right-0 mt-2 w-40 bg-background border border-border rounded-lg shadow-lg z-20">
-            {themes.map((t) => (
+          <div
+            className="absolute right-0 mt-3 w-44 bg-card border border-border rounded-xl shadow-lg overflow-hidden animate-in slide-in-from-top-2 duration-200"
+            style={{ zIndex: 'var(--z-dropdown)' }}>
+            {themes.map((t, index) => (
               <button
                 key={t.name}
                 onClick={() => {
@@ -95,15 +97,29 @@ export function ThemeSwitcher() {
                   setIsOpen(false)
                 }}
                 className={`
-                  w-full flex items-center space-x-3 px-3 py-2 text-left hover:bg-accent hover:text-accent-foreground first:rounded-t-lg last:rounded-b-lg transition-colors text-sm
-                  ${theme === t.name ? 'bg-primary/10 text-primary' : ''}
+                  w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-accent hover:text-accent-foreground transition-all duration-200 text-sm group
+                  ${theme === t.name ? 'bg-primary/10 text-primary border-r-2 border-primary' : ''}
+                  ${index !== themes.length - 1 ? 'border-b border-border/50' : ''}
                 `}
                 title={t.description}
               >
-                <t.icon/>
+                <div
+                  className={`w-5 h-5 flex items-center justify-center ${theme === t.name ? 'text-primary' : 'text-muted-foreground group-hover:text-accent-foreground'}`}>
+                  <t.icon/>
+                </div>
                 <span className="font-medium">{t.label}</span>
+                {theme === t.name && (
+                  <div className="ml-auto">
+                    <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </div>
+                )}
               </button>
             ))}
+            <div className="px-4 py-2 border-t border-border/50 bg-muted/30">
+              <p className="text-xs text-muted-foreground">Theme preference</p>
+            </div>
           </div>
         </>
       )}

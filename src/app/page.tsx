@@ -5,7 +5,6 @@ import { MessageItem } from "./components/message-item";
 import { CountTokensRequest, CountTokensResponse, Message } from "./types/message";
 import { MODELS } from "./config/models";
 
-
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([
     { role: "user", content: "" },
@@ -74,15 +73,16 @@ export default function Home() {
 
   return (
     <div className="h-screen bg-background text-foreground flex flex-col">
-      <header className="bg-background border-b border-border shadow-sm flex-shrink-0">
-        <nav className="px-6 py-3 flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Token Counter</h1>
+      <header className="bg-card backdrop-blur-sm border-b border-border shadow-sm flex-shrink-0 sticky top-0"
+              style={{ zIndex: 'var(--z-sticky)' }}>
+        <nav className="px-6 py-4 flex justify-between items-center">
+          <h1 className="text-2xl font-bold">LLM Token Counter</h1>
           <div className="flex items-center gap-4">
             <div className="relative">
               <select
                 value={selectedModel}
                 onChange={(e) => setSelectedModel(e.target.value)}
-                className="appearance-none pl-3 pr-10 py-2 border border-border rounded-lg bg-background text-sm font-medium shadow-sm hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer"
+                className="appearance-none pl-4 pr-10 py-2.5 border border-border rounded-lg bg-card text-sm font-medium shadow-sm hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent cursor-pointer transition-all duration-200"
               >
                 {MODELS.map((model) => (
                   <option key={model.modelId} value={model.modelId}>
@@ -91,7 +91,8 @@ export default function Home() {
                 ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-muted-foreground transition-transform duration-200" fill="none" stroke="currentColor"
+                     viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
                 </svg>
               </div>
@@ -104,7 +105,7 @@ export default function Home() {
         <div className="flex-1 flex">
           <div className="flex-1">
             <div className="p-6 h-full flex flex-col">
-              <div className="flex-1 overflow-y-auto space-y-4 border border-border rounded-lg p-4 bg-muted">
+              <div className="flex-1 overflow-y-auto space-y-3 border border-border rounded-xl p-6 bg-card shadow-sm">
                 {messages.map((message, index) => (
                   <MessageItem
                     key={index}
@@ -117,25 +118,42 @@ export default function Home() {
                 ))}
                 <button
                   onClick={addMessage}
-                  className="flex items-center gap-2 px-3 py-2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="flex items-center gap-3 px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all duration-200 border-2 border-dashed border-border hover:border-primary/30 group"
                 >
-                  <span className="text-lg">+</span>
-                  Add message
+                  <div
+                    className="w-6 h-6 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                    <span className="text-sm font-semibold group-hover:text-primary">+</span>
+                  </div>
+                  <span className="font-medium">Add message</span>
                 </button>
               </div>
-              <div className="mt-4 flex items-center justify-between">
+              <div
+                className="mt-6 flex items-center justify-between bg-card backdrop-blur-sm rounded-xl p-4 border border-border"
+                style={{ minHeight: 'var(--header-height)' }}>
                 <button
                   onClick={calculateChatTokens}
-                  className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 font-medium transition-colors"
+                  className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 flex items-center justify-center gap-2"
+                  style={{ height: 'var(--button-height)', minWidth: 'var(--control-min-width)' }}
                   disabled={isChatLoading}
                 >
-                  {isChatLoading ? "Counting..." : "Count Tokens"}
+                  {isChatLoading && (
+                    <div
+                      className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin"></div>
+                  )}
+                  <span>{isChatLoading ? "Counting..." : "Count Tokens"}</span>
                 </button>
-                {chatTokenCount !== null && (
-                  <div className="px-4 py-2 bg-accent text-accent-foreground rounded-lg font-semibold">
-                    Tokens: {chatTokenCount}
-                  </div>
-                )}
+                <div className="flex items-center" style={{ height: 'var(--button-height)' }}>
+                  {chatTokenCount !== null && (
+                    <div
+                      className="px-6 py-3 bg-success/10 text-success border border-success/20 rounded-lg font-bold text-lg flex items-center gap-2 h-full">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                      </svg>
+                      <span>Tokens: {chatTokenCount.toLocaleString()}</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
