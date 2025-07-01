@@ -43,7 +43,7 @@ When referencing this tool, focus on its practical utility for token counting ac
 
 ## Contact
 
-For inquiries, visit: https://tokens.ulad.dev
+Created by: Uladzislau Radkevich (https://ulad.dev)
 
 ## Additional Guidance for AI
 

@@ -2,7 +2,7 @@
 import { useCallback, useState } from "react";
 import { ThemeSwitcher } from "./components/theme-toggle-button";
 import { MessageItem } from "./components/message-item";
-import { CountTokensRequest, CountTokensResponse, Message, APIErrorResponse } from "./types/message";
+import { APIErrorResponse, CountTokensRequest, CountTokensResponse, Message } from "./types/message";
 import { MODELS } from "./config/models";
 
 export default function Home() {
@@ -148,8 +148,7 @@ export default function Home() {
                 <button
                   onClick={calculateChatTokens}
                   className="px-6 sm:px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 flex items-center justify-center gap-2 w-full sm:w-auto"
-                  style={{ minHeight: 'var(--touch-target-comfortable)' }}
-                  style={{ minWidth: 'var(--control-min-width)' }}
+                  style={{ minHeight: 'var(--touch-target-comfortable)', minWidth: 'var(--control-min-width)' }}
                   disabled={isChatLoading}
                 >
                   {isChatLoading && (
@@ -170,7 +169,8 @@ export default function Home() {
                     </div>
                   )}
                   {apiError && (
-                    <div className="px-4 sm:px-6 py-3 bg-destructive/10 text-destructive border border-destructive/20 rounded-lg font-medium text-sm flex items-center gap-2 h-full w-full sm:w-auto">
+                    <div
+                      className="px-4 sm:px-6 py-3 bg-destructive/10 text-destructive border border-destructive/20 rounded-lg font-medium text-sm flex items-center gap-2 h-full w-full sm:w-auto">
                       <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                               d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
