@@ -111,6 +111,10 @@
   --input-height: 2.5rem;
   --header-height: 4.5rem;
   --control-min-width: 10rem;
+  
+  /* Touch target tokens */
+  --touch-target-min: 2.75rem;        /* 44px - iOS/Android minimum */
+  --touch-target-comfortable: 3rem;   /* 48px - more comfortable */
 }
 
 /* Prevent flash of unstyled content */

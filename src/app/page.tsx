@@ -89,14 +89,15 @@ export default function Home() {
     <div className="h-screen bg-background text-foreground flex flex-col">
       <header className="bg-card backdrop-blur-sm border-b border-border shadow-sm flex-shrink-0 sticky top-0"
               style={{ zIndex: 'var(--z-sticky)' }}>
-        <nav className="px-6 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold">LLM Token Counter</h1>
+        <nav className="px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0">
+          <h1 className="text-xl sm:text-2xl font-bold">LLM Token Counter</h1>
           <div className="flex items-center gap-4">
-            <div className="relative">
+            <div className="relative max-w-full">
               <select
                 value={selectedModel}
                 onChange={(e) => setSelectedModel(e.target.value)}
-                className="appearance-none pl-4 pr-10 py-2.5 border border-border rounded-lg bg-card text-sm font-medium shadow-sm hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent cursor-pointer transition-all duration-200"
+                className="appearance-none pl-4 pr-10 py-2.5 border border-border rounded-lg bg-card text-sm font-medium shadow-sm hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent cursor-pointer transition-all duration-200 max-w-full truncate"
+                style={{ minHeight: 'var(--touch-target-min)' }}
               >
                 {MODELS.map((model) => (
                   <option key={model.modelId} value={model.modelId}>
@@ -118,8 +119,8 @@ export default function Home() {
       <main className="flex-1 flex overflow-hidden">
         <div className="flex-1 flex">
           <div className="flex-1">
-            <div className="p-6 h-full flex flex-col">
-              <div className="flex-1 overflow-y-auto space-y-3 border border-border rounded-xl p-6 bg-card shadow-sm">
+            <div className="p-4 sm:p-6 h-full flex flex-col">
+              <div className="flex-1 overflow-y-auto space-y-3 border border-border rounded-xl p-4 sm:p-6 bg-card shadow-sm">
                 {messages.map((message, index) => (
                   <MessageItem
                     key={index}
@@ -142,12 +143,13 @@ export default function Home() {
                 </button>
               </div>
               <div
-                className="mt-6 flex items-center justify-between bg-card backdrop-blur-sm rounded-xl p-4 border border-border"
+                className="mt-4 sm:mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 bg-card backdrop-blur-sm rounded-xl p-4 border border-border"
                 style={{ minHeight: 'var(--header-height)' }}>
                 <button
                   onClick={calculateChatTokens}
-                  className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 flex items-center justify-center gap-2"
-                  style={{ height: 'var(--button-height)', minWidth: 'var(--control-min-width)' }}
+                  className="px-6 sm:px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 flex items-center justify-center gap-2 w-full sm:w-auto"
+                  style={{ minHeight: 'var(--touch-target-comfortable)' }}
+                  style={{ minWidth: 'var(--control-min-width)' }}
                   disabled={isChatLoading}
                 >
                   {isChatLoading && (
@@ -156,10 +158,10 @@ export default function Home() {
                   )}
                   <span>{isChatLoading ? "Counting..." : "Count Tokens"}</span>
                 </button>
-                <div className="flex items-center" style={{ height: 'var(--button-height)' }}>
+                <div className="flex items-center w-full sm:w-auto" style={{ height: 'var(--button-height)' }}>
                   {chatTokenCount !== null && (
                     <div
-                      className="px-6 py-3 bg-success/10 text-success border border-success/20 rounded-lg font-bold text-lg flex items-center gap-2 h-full">
+                      className="px-4 sm:px-6 py-3 bg-success/10 text-success border border-success/20 rounded-lg font-bold text-base sm:text-lg flex items-center gap-2 h-full w-full sm:w-auto justify-center sm:justify-start">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                               d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
@@ -168,12 +170,12 @@ export default function Home() {
                     </div>
                   )}
                   {apiError && (
-                    <div className="px-6 py-3 bg-destructive/10 text-destructive border border-destructive/20 rounded-lg font-medium text-sm flex items-center gap-2 h-full">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="px-4 sm:px-6 py-3 bg-destructive/10 text-destructive border border-destructive/20 rounded-lg font-medium text-sm flex items-center gap-2 h-full w-full sm:w-auto">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                               d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                       </svg>
-                      <span>
+                      <span className="overflow-x-auto whitespace-nowrap">
                         {apiError.error}
                       </span>
                     </div>

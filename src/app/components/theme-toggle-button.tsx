@@ -70,7 +70,8 @@ export function ThemeSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2.5 rounded-lg bg-card hover:bg-accent border border-border hover:border-primary/30 transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 group"
+        className="p-3 rounded-lg bg-card hover:bg-accent border border-border hover:border-primary/30 transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 group"
+        style={{ minWidth: 'var(--touch-target-min)', minHeight: 'var(--touch-target-min)' }}
         aria-label="Toggle theme menu"
       >
         <currentTheme.icon/>
